@@ -1,27 +1,26 @@
-/******************************************************************************
-File Name     : main.cpp
-Author        : Dingjiang Zhou
-Email         : zhoudingjiang@gmail.com
-Create Time   : Mon, Mar. 08th, 2021. 08:58:59 PM
-Last Modified :
-Purpose       :
--------------------------------------------------------------------------------
-INPUTS
-
-OUTPUTS
-
-******************************************************************************/
 #include <iostream>
+// #define MAGIC_ENUM_RANGE_MAX 256
 #include <magic_enum.hpp>
 
 using namespace std;
 
 enum class Enum_Example_t {
     NoError = 0,
-    Error1  = -1,
-    Error2  = -2,
+    Error1 = -1,
+    Error2 = -2,
 };
 
+enum class NmtMode {
+    Start = 0x01,
+    Stop = 0x02,
+    PreOp = 0x80,
+    Reset = 0x81,
+    ResetComm = 0x82,
+};
+
+static void Nmt(NmtMode mode) {
+    std::cout << magic_enum::enum_name(mode) << std::endl;
+}
 int main(int argc, char* argv[]) {
 
     // --------------------------
@@ -33,11 +32,26 @@ int main(int argc, char* argv[]) {
 
     // --------------------------
     // output the names of all variables in an enum
-    constexpr auto& names = magic_enum::enum_names<Enum_Example_t>();
+    constexpr auto& n1 = magic_enum::enum_names<Enum_Example_t>();
     std::cout << "Enum_Example_t: ";
-    for (const auto& n : names) {
+    for (const auto& n : n1) {
         std::cout << " " << n;
     }
     std::cout << std::endl;
+
+    // --------------------------
+    // output the names of all variables in an enum
+    constexpr auto& n2 = magic_enum::enum_names<NmtMode>();
+    std::cout << "NmtMode: ";
+    for (const auto& n : n2) {
+        std::cout << " " << n;
+    }
+    std::cout << std::endl;
+
+    std::cout << "output ResetComm name: "
+              << magic_enum::enum_name(NmtMode::ResetComm);
+
+    Nmt(NmtMode::Stop);
+
     return 0;
 }
